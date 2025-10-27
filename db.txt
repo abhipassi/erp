@@ -1,0 +1,24 @@
+<<<<<<< HEAD
+CREATE TABLE admission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    courseApplied VARCHAR(255) NOT NULL,
+    studentName VARCHAR(255) NOT NULL,
+    fatherName VARCHAR(255) NOT NULL,
+    motherName VARCHAR(255) NOT NULL,
+    image VARCHAR(255) NOT NULL,
+    dob DATE NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    pinCode VARCHAR(10) NOT NULL,
+    schoolName VARCHAR(255) NOT NULL,
+    schoolCity VARCHAR(100) NOT NULL,
+    fatherOccupation VARCHAR(255) NOT NULL,
+    fatherAddress VARCHAR(255) NOT NULL,
+    studentEmail VARCHAR(255) NOT NULL,
+    parentContact VARCHAR(15) NOT NULL,
+    studentContact VARCHAR(15) NOT NULL
+);
+=======
+hello
+>>>>>>> 8887c1d1ba1d65fa8960414e920d9d8e190c6a0c
