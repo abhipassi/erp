@@ -100,4 +100,4 @@ const Admission = sequelize.define('Admission', {
 });
 
 
-module.exports = Admission;
+export default Admission
