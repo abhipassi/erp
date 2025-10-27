@@ -1,9 +1,7 @@
-import { Sequelize, DataTypes } from "sequelize";
-// const { DataTypes } = require('sequelize');
- const sequelize = require('../config/database'); // assuming your Sequelize instance is set up here
+import { DataTypes } from "sequelize";
+import sequelize from '../database/DB.js'
 
 const Admission = sequelize.define('Admission', {
-  // Fields based on the table schema
 
   id: {
     type: DataTypes.INTEGER,
@@ -32,7 +30,7 @@ const Admission = sequelize.define('Admission', {
   },
 
   image: {
-    type: DataTypes.STRING(255), // URL or file path to the image
+    type: DataTypes.STRING(255), 
     allowNull: false,
   },
 
@@ -96,14 +94,10 @@ const Admission = sequelize.define('Admission', {
     allowNull: false,
   },
 }, {
-  // Options to control table creation and metadata
-  tableName: 'admission', // Ensure table name matches
-  timestamps: false, // If you don't want Sequelize to add timestamps
+
+  tableName: 'admission', // table name 
+  timestamps: false, 
 });
 
-// Sync the model with the database (if needed)
-sequelize.sync().then(() => {
-  console.log('Admission table has been synced');
-});
 
 module.exports = Admission;
