@@ -96,7 +96,7 @@ const Admission = sequelize.define('Admission', {
 }, {
 
   tableName: 'admission', // table name 
-  timestamps: false, 
+  timestamps: true, 
 });
 
 

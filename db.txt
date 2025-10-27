@@ -18,3 +18,21 @@ CREATE TABLE admission (
     parentContact VARCHAR(15) NOT NULL,
     studentContact VARCHAR(15) NOT NULL
 );
+CREATE TABLE receipt (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admissionNo INT NOT NULL UNIQUE,  -- Admission Number
+    ReceiptNo INT NOT NULL UNIQUE,    -- Receipt Number
+    course VARCHAR(255) NOT NULL,
+    studentName VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    pendingFees VARCHAR(255) NOT NULL,
+    mode VARCHAR(255) NOT NULL,
+    particulars VARCHAR(255) NOT NULL,
+    CGST FLOAT NOT NULL,
+    UTGST FLOAT NOT NULL,
+    total FLOAT NOT NULL,
+    amountInWords VARCHAR(255) NOT NULL,
+    authSignatory VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- auto generated timestamp
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- auto update timestamp
+);
