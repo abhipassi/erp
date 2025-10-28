@@ -25,22 +25,32 @@ CREATE TABLE admission (
 
 CREATE TABLE receipt (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    admissionNo INT NOT NULL UNIQUE,  -- Admission Number
-    ReceiptNo INT NOT NULL UNIQUE,    -- Receipt Number
+    ReceiptNo INT NOT NULL UNIQUE,
+    admissionId INT NOT NULL,
+    studentFeeId INT NOT NULL,
     course VARCHAR(255) NOT NULL,
     studentName VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
-    pendingFees VARCHAR(255) NOT NULL,
+    pendingFees DECIMAL(10,2) NOT NULL,
     mode VARCHAR(255) NOT NULL,
     particulars VARCHAR(255) NOT NULL,
-    CGST FLOAT NOT NULL,
-    UTGST FLOAT NOT NULL,
-    total FLOAT NOT NULL,
+    CGST DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+    UTGST DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+    total DECIMAL(10,2) NOT NULL,
     amountInWords VARCHAR(255) NOT NULL,
     authSignatory VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- auto generated timestamp
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- auto update timestamp
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_receipt_admission
+        FOREIGN KEY (admissionId) REFERENCES admission(studentId)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_receipt_studentfees
+        FOREIGN KEY (studentFeeId) REFERENCES student_fees(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
+
 CREATE TABLE fees_master (
     id INT AUTO_INCREMENT PRIMARY KEY,
     class VARCHAR(10) NOT NULL,                 -- 'XI' or 'XII'
@@ -93,4 +103,17 @@ ADD CONSTRAINT fk_receipt_studentfees
 FOREIGN KEY (studentFeeId) REFERENCES student_fees(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
+
+
+CREATE TABLE login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,       -- hashed password
+    role ENUM('admin', 'staff', 'student') DEFAULT 'student',
+    last_login TIMESTAMP NULL,
+    refresh_token VARCHAR(500),                -- store latest refresh token securely
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
