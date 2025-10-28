@@ -8,7 +8,7 @@ const Admission = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      field: "studentId", // maps to the DB column
+      field: "studentId", 
     },
 
     rollNo: {
@@ -105,8 +105,6 @@ const Admission = sequelize.define(
       type: DataTypes.STRING(15),
       allowNull: false,
     },
-
-    // Timestamps (Sequelize maps automatically if timestamps: true)
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
