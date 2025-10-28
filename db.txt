@@ -1,5 +1,7 @@
 CREATE TABLE admission (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    studentId INT AUTO_INCREMENT PRIMARY KEY,
+    rollNo VARCHAR(50) NOT NULL,
+    admissionNo VARCHAR(50) NOT NULL,
     courseApplied VARCHAR(255) NOT NULL,
     studentName VARCHAR(255) NOT NULL,
     fatherName VARCHAR(255) NOT NULL,
@@ -16,11 +18,10 @@ CREATE TABLE admission (
     fatherAddress VARCHAR(255) NOT NULL,
     studentEmail VARCHAR(255) NOT NULL,
     parentContact VARCHAR(15) NOT NULL,
-    studentContact VARCHAR(15) NOT NULL
+    studentContact VARCHAR(15) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-ALTER TABLE admission
-ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 CREATE TABLE receipt (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,3 +41,56 @@ CREATE TABLE receipt (
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- auto generated timestamp
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- auto update timestamp
 );
+CREATE TABLE fees_master (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    class VARCHAR(10) NOT NULL,                 -- 'XI' or 'XII'
+    academic_year VARCHAR(10) NOT NULL,         -- e.g., '2025-26'
+    total_fees DECIMAL(10,2) NOT NULL,         -- e.g., 177000.00
+    lumpsum_fee DECIMAL(10,2) NOT NULL,        -- e.g., 167000.00
+    gst_included BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE fee_installments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fees_master_id INT NOT NULL,
+    installment_no INT NOT NULL,
+    installment_name VARCHAR(50),               -- e.g., 'First Installment'
+    due_date DATE NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (fees_master_id) REFERENCES fees_master(id)
+);
+CREATE TABLE student_fees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    fees_master_id INT NOT NULL,
+    total_fees DECIMAL(10,2) NOT NULL,
+    received_fees DECIMAL(10,2) DEFAULT 0,
+    refunded_fees DECIMAL(10,2) DEFAULT 0,
+    pending_fees DECIMAL(10,2) GENERATED ALWAYS AS (total_fees - received_fees + refunded_fees) STORED,
+    payment_status ENUM('Pending','Partial','Paid') DEFAULT 'Pending',
+    last_payment_date DATE,
+    remarks TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES admission(studentId),
+    FOREIGN KEY (fees_master_id) REFERENCES fees_master(id)
+);
+ALTER TABLE receipt
+ADD COLUMN admissionId INT NOT NULL AFTER id,
+ADD COLUMN studentFeeId INT NOT NULL AFTER admissionId;
+
+ALTER TABLE receipt
+ADD CONSTRAINT fk_receipt_admission
+FOREIGN KEY (admissionId) REFERENCES admission(studentId)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE receipt
+ADD CONSTRAINT fk_receipt_studentfees
+FOREIGN KEY (studentFeeId) REFERENCES student_fees(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
