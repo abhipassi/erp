@@ -3,6 +3,10 @@ export const demo = (req, res) => {
     res.json("Student Routes Working")
 }
 
+export const admissionNumber = () => {
+    
+}
+
 export const uploadFile = (req, res) => {
     try {
         if (!req.file) {
@@ -41,7 +45,7 @@ export const newAdmission = async (req, res) => {
             studentContact,
         } = req.body;
 
-        
+
         const image = req.file ? req.file.filename : null;
 
         const response = await admission.create({
@@ -61,7 +65,7 @@ export const newAdmission = async (req, res) => {
             studentEmail,
             parentContact,
             studentContact,
-            image, 
+            image,
         });
 
         res.status(201).json({ success: true, response });
