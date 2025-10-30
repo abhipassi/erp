@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/DB.js";
 import StudentFees from "./studentFees.js";
+import Admission from "./admission.js";
 
 const Receipt = sequelize.define(
   "Receipt",
@@ -15,6 +16,15 @@ const Receipt = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
+    },
+
+    admissionId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Admission,
+        key: "id",
+      },
     },
 
     studentFeeId: {
@@ -74,32 +84,38 @@ const Receipt = sequelize.define(
 
     hooks: {
       beforeCreate: async (receipt) => {
-        // Auto-increment ReceiptNo
         const maxReceipt = (await Receipt.max("ReceiptNo")) || 1000;
         receipt.ReceiptNo = maxReceipt + 1;
 
-        // Calculate GST (assuming 9% each for CGST & UTGST)
+
         receipt.CGST = parseFloat(receipt.amount) * 0.09;
         receipt.UTGST = parseFloat(receipt.amount) * 0.09;
         receipt.totalWithGST =
           parseFloat(receipt.amount) + parseFloat(receipt.CGST) + parseFloat(receipt.UTGST);
 
-        // Update StudentFees
         const studentFee = await StudentFees.findByPk(receipt.studentFeeId);
+
         if (studentFee) {
+      
+          receipt.admissionId = studentFee.admissionId;
+
+        
           studentFee.receivedFees =
             parseFloat(studentFee.receivedFees) + parseFloat(receipt.totalWithGST);
-
-          // pendingFees and paymentStatus will auto-update due to StudentFees hooks
           await studentFee.save();
+        } else {
+          throw new Error("Invalid studentFeeId: no matching StudentFees record found.");
         }
       },
     },
   }
 );
 
-// Associations
+// 🔗 Associations
 StudentFees.hasMany(Receipt, { foreignKey: "studentFeeId" });
 Receipt.belongsTo(StudentFees, { foreignKey: "studentFeeId" });
+
+Admission.hasMany(Receipt, { foreignKey: "admissionId" });
+Receipt.belongsTo(Admission, { foreignKey: "admissionId" });
 
 export default Receipt;
