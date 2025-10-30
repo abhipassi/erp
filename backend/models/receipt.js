@@ -87,7 +87,6 @@ const Receipt = sequelize.define(
         const maxReceipt = (await Receipt.max("ReceiptNo")) || 1000;
         receipt.ReceiptNo = maxReceipt + 1;
 
-
         receipt.CGST = parseFloat(receipt.amount) * 0.09;
         receipt.UTGST = parseFloat(receipt.amount) * 0.09;
         receipt.totalWithGST =
@@ -98,8 +97,7 @@ const Receipt = sequelize.define(
         if (studentFee) {
       
           receipt.admissionId = studentFee.admissionId;
-
-        
+          
           studentFee.receivedFees =
             parseFloat(studentFee.receivedFees) + parseFloat(receipt.totalWithGST);
           await studentFee.save();
