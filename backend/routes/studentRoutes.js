@@ -1,11 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import upload from '../middleware/multerConfig.js'
-import {
-    demo,
-    uploadFile,
-    newAdmission
-} from "../controllers/studentControllers.js"
+import {demo, uploadFile, newAdmission} from "../controllers/studentControllers.js"
 
 router.get('/demo', demo)
 
