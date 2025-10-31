@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 import {
     demo
-} from "../controllers/adminControllers.js"
+} from "../controllers/adminController.js"
 
 router.get('/demo', demo)
 

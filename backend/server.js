@@ -19,10 +19,12 @@ app.use("/uploads", express.static("uploads"));
 // models imports 
 import adminRoutes from "./routes/adminRoutes.js";
 import studentControllersRoutes from "./routes/studentRoutes.js";
+import loginRoute from "./routes/loginRoute.js";
 
 // Routes 
 app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentControllersRoutes);
+app.use("/api/login", loginRoute);
 
 // Connect to DB 
 (async function startServer() {
