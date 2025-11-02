@@ -4,6 +4,7 @@ import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 
 const Receipt = () => {
   const [formData, setFormData] = useState({
+    admissionNo: "",
     receiptNo: "",
     studentId: "",
     installmentId: "",
@@ -13,6 +14,7 @@ const Receipt = () => {
     cgst: 0,
     utgst: 0,
     total: 0,
+    pendingFees: "",
     amountInWords: "",
   });
 
@@ -27,7 +29,8 @@ const Receipt = () => {
     try {
       const res = await axios.get("http://localhost:3000/api/receipts");
       const receipts = res.data;
-      const lastReceipt = receipts.length > 0 ? receipts[receipts.length - 1] : null;
+      const lastReceipt =
+        receipts.length > 0 ? receipts[receipts.length - 1] : null;
 
       if (lastReceipt && lastReceipt.receiptNo) {
         const lastNumber = parseInt(lastReceipt.receiptNo.split("-")[1]);
@@ -68,8 +71,16 @@ const Receipt = () => {
     const studentId = e.target.value;
     setFormData({ ...formData, studentId });
     try {
-      const res = await axios.get(`http://localhost:3000/api/students/${studentId}`);
+      const res = await axios.get(
+        `http://localhost:3000/api/students/${studentId}`
+      );
       setSelectedStudent(res.data);
+
+      // Auto-fill admission number if available from student data
+      setFormData((prev) => ({
+        ...prev,
+        admissionNo: res.data?.admissionNo || "",
+      }));
     } catch (error) {
       console.error("Error fetching student:", error);
     }
@@ -149,7 +160,8 @@ const Receipt = () => {
     str +=
       n[5] != 0
         ? (str != "" ? "and " : "") +
-          (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) + " Only"
+          (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) +
+          " Only"
         : "";
     return str;
   };
@@ -161,6 +173,7 @@ const Receipt = () => {
       await axios.post("http://localhost:3000/api/receipts", formData);
       alert("✅ Receipt added successfully!");
       setFormData({
+        admissionNo: "",
         receiptNo: await generateReceiptNo(),
         studentId: "",
         installmentId: "",
@@ -170,6 +183,7 @@ const Receipt = () => {
         cgst: 0,
         utgst: 0,
         total: 0,
+        pendingFees: "",
         amountInWords: "",
       });
       setShowReceipt(true);
@@ -190,6 +204,19 @@ const Receipt = () => {
       >
         <Row>
           <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Admission No</Form.Label>
+              <Form.Control
+                type="text"
+                name="admissionNo"
+                value={formData.admissionNo}
+                onChange={(e) =>
+                  setFormData({ ...formData, admissionNo: e.target.value })
+                }
+                required
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>Receipt No</Form.Label>
               <Form.Control type="text" value={formData.receiptNo} readOnly />
@@ -276,22 +303,35 @@ const Receipt = () => {
 
         {/* Auto Calculated Section */}
         <Row>
-          <Col md={4}>
+          <Col md={3}>
             <Form.Group className="mb-3">
               <Form.Label>CGST (9%)</Form.Label>
               <Form.Control type="text" value={formData.cgst} readOnly />
             </Form.Group>
           </Col>
-          <Col md={4}>
+          <Col md={3}>
             <Form.Group className="mb-3">
               <Form.Label>UTGST (9%)</Form.Label>
               <Form.Control type="text" value={formData.utgst} readOnly />
             </Form.Group>
           </Col>
-          <Col md={4}>
+          <Col md={3}>
             <Form.Group className="mb-3">
               <Form.Label>Total</Form.Label>
               <Form.Control type="text" value={formData.total} readOnly />
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group className="mb-3">
+              <Form.Label>Pending Fees</Form.Label>
+              <Form.Control
+                type="number"
+                name="pendingFees"
+                value={formData.pendingFees}
+                onChange={(e) =>
+                  setFormData({ ...formData, pendingFees: e.target.value })
+                }
+              />
             </Form.Group>
           </Col>
         </Row>
@@ -305,6 +345,7 @@ const Receipt = () => {
       {showReceipt && (
         <Card className="mt-5 p-4 shadow" id="printSection">
           <h4 className="text-center mb-4">🎟 Receipt</h4>
+          <p><strong>Admission No:</strong> {formData.admissionNo}</p>
           <p><strong>Receipt No:</strong> {formData.receiptNo}</p>
           <p><strong>Student:</strong> {selectedStudent?.studentName}</p>
           <p><strong>Course:</strong> {selectedStudent?.courseApplied}</p>
@@ -315,13 +356,11 @@ const Receipt = () => {
           <p><strong>CGST:</strong> ₹{formData.cgst}</p>
           <p><strong>UTGST:</strong> ₹{formData.utgst}</p>
           <p><strong>Total:</strong> ₹{formData.total}</p>
+          <p><strong>Pending Fees:</strong> ₹{formData.pendingFees}</p>
           <p><strong>Amount in Words:</strong> {convertToWords(formData.total)}</p>
 
           <div className="text-center mt-4">
-            <Button
-              variant="success"
-              onClick={() => window.print()}
-            >
+            <Button variant="success" onClick={() => window.print()}>
               🖨 Print Receipt
             </Button>
           </div>
