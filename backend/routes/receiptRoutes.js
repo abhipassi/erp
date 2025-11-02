@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.get("/next-number", getNextReceiptNo);
 router.get("/admission/:admissionNo", getAdmissionDetails);
-router.post("/", createReceipt);
-router.get("/", getAllReceipts);
+router.post("/createReceipt", createReceipt);
+router.get("/getReceipt", getAllReceipts);
 router.get("/:id", getReceiptById);
 router.put("/:id", updateReceipt);
 router.delete("/:id", deleteReceipt);

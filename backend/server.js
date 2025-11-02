@@ -6,6 +6,7 @@ import sequelize from "./database/DB.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import studentControllersRoutes from "./routes/studentRoutes.js";
 import loginRoute from "./routes/loginRoute.js";
+import createRoute from "./routes/receiptRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -31,6 +32,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentControllersRoutes);
 app.use("/api/login", loginRoute);
+app.use("/api/createReceipt", createRoute );
 
 // Connect to DB 
 (async function startServer() {
