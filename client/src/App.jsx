@@ -12,13 +12,8 @@ function App() {
       <Route path="/admission" element={<Admission />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
-<<<<<<< HEAD
-      <Route path="/receipt" element={<Receipt />} />
       <Route path="/viewreceipts" element={<ViewReceipts />} />
-
-=======
       <Route path="/createReceipt" element ={<Receipt />} />
->>>>>>> 8bf450938559302e118bbd825d8a168f73513b5a
     </Routes>
   );
 }
