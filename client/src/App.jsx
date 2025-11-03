@@ -4,6 +4,8 @@ import SignUp from "./authCompnents/signUp";
 import Login from "./authCompnents/login";
 import Receipt from "./authCompnents/receipt"
 import ViewReceipts from "./authCompnents/viewReceipt";
+import AdminHome from "./adminComponents/adminHome";
+import ManageStudents from "./adminComponents/manageStudents";
 
 
 function App() {
@@ -13,8 +15,18 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/viewreceipts" element={<ViewReceipts />} />
-      <Route path="/createReceipt" element ={<Receipt />} />
-      <Route path="/getReceipt" element ={<ViewReceipts />} />
+      <Route path="/createReceipt" element={<Receipt />} />
+      <Route path="/getReceipt" element={<ViewReceipts />} />
+
+
+
+
+      {/* admin Routes  */}
+      <Route path="/AdminHome" element={<AdminHome />} />
+      <Route path="/manageStudents" element={<ManageStudents />} />
+
+
+
     </Routes>
   );
 }
