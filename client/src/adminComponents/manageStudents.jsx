@@ -15,7 +15,7 @@ function ManageStudents() {
     });
 
     const getStudentData = () =>{
-        
+
     }
 
     const handleChange = (e) => {
