@@ -14,6 +14,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/viewreceipts" element={<ViewReceipts />} />
       <Route path="/createReceipt" element ={<Receipt />} />
+      <Route path="/getReceipt" element ={<ViewReceipts />} />
     </Routes>
   );
 }
