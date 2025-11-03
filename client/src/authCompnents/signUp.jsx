@@ -1,4 +1,9 @@
+
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -7,22 +12,44 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!", { position: "top-center" });
+      return;
+    }
+
     try {
       const data = {
         name: name.trim(),
         mobileNumber: mobileNumber.trim(),
         password: password.trim(),
-        confirmPassword: confirmPassword.trim(),
         email: email.trim(),
       };
 
-      console.log("Form Data:", data);
-      alert("Signup Successful!");
+      const response = await axios.post("http://localhost:3000/api/signup", data);
+      console.log("Signup Success:", response.data);
+
+      // ✅ Show success toast
+      toast.success("Signup successful! Redirecting to login...", {
+        position: "top-center",
+        autoClose: 2000, // close after 2 seconds
+      });
+
+      // ✅ Redirect after toast delay
+      setTimeout(() => {
+        navigate("/login");
+      }, 2200);
+
     } catch (error) {
-      console.log(error);
-      alert("Error submitting form!");
+      console.error("Signup Error:", error);
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Please try again.",
+        { position: "top-center" }
+      );
     }
   };
 
@@ -106,6 +133,9 @@ function SignUp() {
           </div>
         </form>
       </div>
+
+      {/* Toast container must be rendered once */}
+      <ToastContainer />
     </div>
   );
 }
