@@ -4,6 +4,7 @@ import SignUp from "./authCompnents/signUp";
 import Login from "./authCompnents/login";
 import Receipt from "./authCompnents/receipt";
 import ViewReceipts from "./authCompnents/viewReceipt";
+// import Receipt from "./authCompnents/receipt"
 
 function App() {
   return (
@@ -14,10 +15,9 @@ function App() {
       {/* Auth Pages */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
-
-      {/* Receipt Pages */}
-      <Route path="/create-receipt" element={<Receipt />} />
-      <Route path="/view-receipts" element={<ViewReceipts />} />
+      <Route path="/viewreceipts" element={<ViewReceipts />} />
+      <Route path="/createReceipt" element ={<Receipt />} />
+      <Route path="/getReceipt" element ={<ViewReceipts />} />
     </Routes>
   );
 }
