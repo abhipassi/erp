@@ -27,19 +27,17 @@ function SignUp() {
         name: name.trim(),
         mobileNumber: mobileNumber.trim(),
         password: password.trim(),
+
         email: email.trim(),
       };
 
-      const response = await axios.post("http://localhost:3000/api/signup", data);
+      const response = await axios.post("http://localhost:3000/api/auth/signup", data);
       console.log("Signup Success:", response.data);
-
-      // ✅ Show success toast
       toast.success("Signup successful! Redirecting to login...", {
         position: "top-center",
         autoClose: 2000, // close after 2 seconds
       });
 
-      // ✅ Redirect after toast delay
       setTimeout(() => {
         navigate("/login");
       }, 2200);

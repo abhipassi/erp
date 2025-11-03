@@ -9,8 +9,11 @@ import adminRoutes from "./routes/adminRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import authRoutes from "./routes/authRoutes.js"; // renamed from loginRoute.js
 import receiptRoutes from "./routes/receiptRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
 
 dotenv.config();
+console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
+
 const app = express();
 
 //  Middleware
@@ -33,6 +36,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentRoutes);
 app.use("/api/auth", authRoutes); // handles login + signup
 app.use("/api/receipt", receiptRoutes);
+app.use("/api/courses", courseRoutes);
 
 // Database connection and server start
 (async function startServer() {
@@ -40,7 +44,7 @@ app.use("/api/receipt", receiptRoutes);
     await sequelize.authenticate();
     console.log("Database connection established successfully.");
 
-    await sequelize.sync({ alter: true }); // auto updates schema safely
+    await sequelize.sync(); // auto updates schema safely
     console.log("Database synced successfully (alter mode).");
 
     const PORT = process.env.PORT || 3000;
