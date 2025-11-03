@@ -4,7 +4,7 @@ import SignUp from "./authCompnents/signUp";
 import Login from "./authCompnents/login";
 import Receipt from "./authCompnents/receipt"
 import ViewReceipts from "./authCompnents/viewReceipt";
-import Receipt from "./authCompnents/receipt"
+
 
 function App() {
   return (
