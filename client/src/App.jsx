@@ -7,6 +7,7 @@ import ViewReceipts from "./authCompnents/viewReceipt";
 import Course from "./authCompnents/courses";
 import ManageStudents from "./adminComponents/manageStudents";
 import AdminHome from "./adminComponents/adminHome";
+import StudentDashboard from "./studentComponents/studentDashboard";
 // import Receipt from "./authCompnents/receipt"
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
       {/* admin routes  */}
       <Route path="/adminHome" element={<AdminHome />} />
       <Route path="/manageStudents" element={<ManageStudents />} />
+      <Route path="/studentDashboard" element={<StudentDashboard />} />
+
     </Routes>
   );
 }

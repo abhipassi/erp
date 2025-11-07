@@ -61,7 +61,7 @@ function ManageStudents() {
                 className="card shadow border-0 rounded-4 p-4 mx-auto"
                 style={{ maxWidth: "1100px" }}
             >
-                {/* Header */}
+                {/*  Header */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h3 className="fw-bold text-primary mb-0">🎓 Manage Students</h3>
                     <button
