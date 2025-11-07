@@ -22,14 +22,27 @@ const Course = sequelize.define(
       allowNull: false,
     },
     courseType: {
+      type: DataTypes.ENUM(
+        "Class Room",
+        "Course Material",
+        "Exam Material",
+        "Online Class",
+        "Test Series"
+      ),
+      allowNull: false,
+    },
+    installment: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
     timestamps: true,
-    tableName: "Courses", 
+    tableName: "Courses",
   }
 );
 
 export default Course;
+
+
+
