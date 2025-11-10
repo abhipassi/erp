@@ -111,7 +111,7 @@ import Admission from "../models/admission.js";
 import Course from "../models/course.js";
 import { Op } from "sequelize";
 
-// ✅ Create new admission
+//  Create new admission
 export const createAdmission = async (req, res) => {
   try {
     const {
@@ -133,7 +133,7 @@ export const createAdmission = async (req, res) => {
       fatherAddress,
     } = req.body;
 
-    // ✅ Validation
+    //  Validation
     if (
       !courseApplied ||
       !studentName ||
@@ -155,7 +155,7 @@ export const createAdmission = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    // ✅ Check if course exists
+    //  Check if course exists
     const selectedCourse = await Course.findOne({
       where: { courseName: courseApplied },
     });
@@ -164,10 +164,10 @@ export const createAdmission = async (req, res) => {
       return res.status(404).json({ message: "Selected course not found." });
     }
 
-    // ✅ Image handling
+    // Image handling
     const image = req.file ? req.file.filename : null;
 
-    // ✅ Create new admission
+    //  Create new admission
     const newAdmission = await Admission.create({
       courseApplied,
       studentName,
@@ -188,19 +188,19 @@ export const createAdmission = async (req, res) => {
       image,
     });
 
-    // ✅ Include course details in response
+    //  Include course details in response
     res.status(201).json({
       message: "Admission created successfully.",
       admission: newAdmission,
       courseDetails: selectedCourse,
     });
   } catch (error) {
-    console.error("❌ Error creating admission:", error);
+    console.error(" Error creating admission:", error);
     res.status(500).json({ message: "Failed to create admission." });
   }
 };
 
-// ✅ Get all admissions
+//  Get all admissions
 export const getAllAdmissions = async (req, res) => {
   try {
     const admissions = await Admission.findAll({
@@ -208,12 +208,12 @@ export const getAllAdmissions = async (req, res) => {
     });
     res.status(200).json(admissions);
   } catch (error) {
-    console.error("❌ Error fetching admissions:", error);
+    console.error(" Error fetching admissions:", error);
     res.status(500).json({ message: "Failed to fetch admissions." });
   }
 };
 
-// ✅ Get admission by ID
+//  Get admission by ID
 export const getAdmissionById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -225,7 +225,7 @@ export const getAdmissionById = async (req, res) => {
 
     res.status(200).json(admission);
   } catch (error) {
-    console.error("❌ Error fetching admission:", error);
+    console.error(" Error fetching admission:", error);
     res.status(500).json({ message: "Failed to fetch admission." });
   }
 };
