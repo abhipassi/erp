@@ -26,7 +26,7 @@
 
 // export const newAdmission = async (req, res) => {
 //     try {
-//         const {
+//         const {     
 //             courseApplied,
 //             studentName,
 //             fatherName,
