@@ -3,18 +3,23 @@ import Course from "../models/course.js";
 //  Create Course
 export const createCourse = async (req, res) => {
   try {
-    const { courseName, courseFees, courseDuration, courseType } = req.body;
+    // const { courseName, courseFees, courseDuration, courseType } = req.body;
+    const { courseName, courseFees, courseDuration, courseType, installment } = req.body;
+
 
     if (!courseName || !courseFees || !courseDuration || !courseType) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const newCourse = await Course.create({
-      courseName,
-      courseFees,
-      courseDuration,
-      courseType,
-    });
+     const newCourse = 
+    // await Course.create({
+    //   courseName,
+    //   courseFees,
+    //   courseDuration,
+    //   courseType,
+    // });
+    await Course.create({ courseName, courseFees, courseDuration, courseType, installment });
+
 
     res.status(201).json({
       message: "Course added successfully.",
@@ -72,12 +77,9 @@ export const updateCourse = async (req, res) => {
       return res.status(404).json({ message: "Course not found." });
     }
 
-    await course.update({
-      courseName,
-      courseFees,
-      courseDuration,
-      courseType,
-    });
+    // await course.update({courseName, courseFees, courseDuration, courseType,});
+    await course.update({ courseName, courseFees, courseDuration, courseType, installment });
+
 
     res.status(200).json({
       message: "Course updated successfully.",

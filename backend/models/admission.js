@@ -23,7 +23,7 @@ const Admission = sequelize.define(
 
     courseApplied: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
 
     studentName: {

@@ -10,30 +10,23 @@ const FeeInstallments = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-
-    feesMasterId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: FeesMaster,
-        key: "id",
-      },
-    },
+    // feesMasterId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: FeesMaster,
+    //     key: "id",
+    //   },
+    // },
 
     installmentNo: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
-    installmentName: {
-      type: DataTypes.STRING(50),
-    },
-
-    dueDate: {
+    Date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-
     amount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
